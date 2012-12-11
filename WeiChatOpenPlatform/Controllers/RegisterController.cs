@@ -58,7 +58,7 @@ namespace WeiChatOpenPlatform.Controllers
             {
                 Content = "测试",
                 CreateTime = request.CreateTime + 10,
-                FromUserName = "工作小助手",
+                FromUserName = "gh_c9f7ad037912",
                 ToUserName = req.FromUserName,
                 MsgType = "text",
                 FuncFlag = 1
@@ -106,6 +106,7 @@ namespace WeiChatOpenPlatform.Controllers
                     xmlResponseContent = sr.ReadToEnd();
                 }
             }
+            MsgRepositry.Messages.Add(xmlResponseContent);
             return new ContentResult() { Content = xmlResponseContent };
 
         }
