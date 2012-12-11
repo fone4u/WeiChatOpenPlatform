@@ -12,7 +12,7 @@ namespace DomainCore
         public static String Enctypt(String str)
         {
             SHA1CryptoServiceProvider provider = new SHA1CryptoServiceProvider();
-            byte[] hashBytes = provider.ComputeHash(UTF8Encoding.UTF8.GetBytes(str.ToCharArray()));
+            byte[] hashBytes = provider.ComputeHash(UTF8Encoding.ASCII.GetBytes(str.ToCharArray()));
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < hashBytes.Length; i++)
                 sb.AppendFormat("{0:x}", hashBytes[i]);

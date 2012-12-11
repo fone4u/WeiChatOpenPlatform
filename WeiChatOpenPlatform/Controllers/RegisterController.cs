@@ -5,6 +5,12 @@ using System.Web;
 using System.Web.Mvc;
 using System.Text;
 using DomainCore;
+using RestSharp.Deserializers;
+using RestSharp.Serializers;
+
+using RestSharp;
+using System.IO;
+
 
 namespace WeiChatOpenPlatform.Controllers
 {
@@ -12,6 +18,8 @@ namespace WeiChatOpenPlatform.Controllers
     {
         private const string TOKEN = "CareerBuilderChina";
         private const String ERROR_CONTENT = "ERROR";
+
+        [HttpGet]
         public ActionResult Index(String signature, string timestamp, string nonce, string echostr)
         {
             return new ContentResult() { Content = echostr };
@@ -29,6 +37,32 @@ namespace WeiChatOpenPlatform.Controllers
             //    }
             //}
             //return new ContentResult() { Content = ERROR_CONTENT };
+        }
+
+        [HttpPost]
+        public ActionResult Index()
+        {
+            string xmlContent = "";
+            using (StreamReader sr = new StreamReader(Request.InputStream))
+            {
+                xmlContent = sr.ReadToEnd();
+            }
+            XmlDeserializer xds = new XmlDeserializer();
+            WeiChatRequest request = xds.Deserialize<WeiChatRequest>(new RestResponse() { Content = xmlContent });
+            TextRequest req = new TextRequest(request);
+
+            TextResponse rsp = new TextResponse()
+            {
+                Content = "测试",
+                CreateTime = request.CreateTime + 10,
+                FromUserName = "工作小助手",
+                ToUserName = req.FromUserName,
+                MsgType = "text"
+            };
+            XmlSerializer xs = new XmlSerializer();
+            xs.DateFormat = "";
+            return new ContentResult() { Content = xs.Serialize(rsp) };
+
         }
 
     }
