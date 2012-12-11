@@ -14,19 +14,21 @@ namespace WeiChatOpenPlatform.Controllers
         private const String ERROR_CONTENT = "ERROR";
         public ActionResult Index(String signature, string timestamp, string nonce, string echostr)
         {
-            if (String.IsNullOrEmpty(signature) || String.IsNullOrEmpty(timestamp)
-                || String.IsNullOrEmpty(nonce) || String.IsNullOrEmpty(echostr))
-            {
-                String[] qsValues = { TOKEN, timestamp, nonce };
-                Array.Sort<String>(qsValues);
-                String plainString = String.Join("", qsValues);
-                String encryptedString = SHA1Algorithm.Enctypt(plainString);
-                if (encryptedString == signature)
-                {
-                    return new ContentResult() { Content = echostr };
-                }
-            }
-            return new ContentResult() { Content = ERROR_CONTENT };
+            return new ContentResult() { Content = echostr };
+
+            //if (!(String.IsNullOrEmpty(signature) || String.IsNullOrEmpty(timestamp)
+            //    || String.IsNullOrEmpty(nonce) || String.IsNullOrEmpty(echostr)))
+            //{
+            //    String[] qsValues = { TOKEN, timestamp, nonce };
+            //    Array.Sort<String>(qsValues);
+            //    String plainString = String.Join("", qsValues);
+            //    String encryptedString = SHA1Algorithm.Enctypt(plainString);
+            //    if (encryptedString == signature)
+            //    {
+            //        return new ContentResult() { Content = echostr };
+            //    }
+            //}
+            //return new ContentResult() { Content = ERROR_CONTENT };
         }
 
     }
