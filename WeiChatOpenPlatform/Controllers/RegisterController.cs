@@ -10,6 +10,7 @@ using RestSharp.Serializers;
 
 using RestSharp;
 using System.IO;
+using System.Xml;
 
 
 namespace WeiChatOpenPlatform.Controllers
@@ -60,11 +61,50 @@ namespace WeiChatOpenPlatform.Controllers
                 MsgType = "text",
                 FuncFlag = 1
             };
-            XmlSerializer xs = new XmlSerializer();
-            xs.DateFormat = "";
-            String xml = xs.Serialize(rsp);
-            xml = xml.Replace("TextResponse", "xml");
-            return new ContentResult() { Content = xml };
+
+            String xmlResponseContent = string.Empty;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                XmlTextWriter xw = new XmlTextWriter(stream, UTF8Encoding.UTF8);
+                xw.WriteStartElement("xml");
+
+                xw.WriteStartElement("ToUserName");
+                xw.WriteCData(rsp.ToUserName);
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("FromUserName");
+                xw.WriteCData(rsp.FromUserName);
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("CreateTime");
+                xw.WriteValue(rsp.CreateTime);
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("MsgType");
+                xw.WriteCData(rsp.MsgType);
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("Content");
+                xw.WriteCData(rsp.Content);
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("FuncFlag");
+                xw.WriteValue(0);
+                xw.WriteEndElement();
+
+
+                xw.WriteEndElement();
+
+                xw.Flush();
+
+                stream.Position = 0;
+
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    xmlResponseContent = sr.ReadToEnd();
+                }
+            }
+            return new ContentResult() { Content = xmlResponseContent };
 
         }
 
