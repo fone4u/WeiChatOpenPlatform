@@ -61,7 +61,9 @@ namespace WeiChatOpenPlatform.Controllers
             };
             XmlSerializer xs = new XmlSerializer();
             xs.DateFormat = "";
-            return new ContentResult() { Content = xs.Serialize(rsp) };
+            String xml = xs.Serialize(rsp);
+            xml = xml.Replace("TextResponse", "xml");
+            return new ContentResult() { Content = xml };
 
         }
 
