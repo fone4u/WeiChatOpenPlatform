@@ -57,7 +57,8 @@ namespace WeiChatOpenPlatform.Controllers
                 CreateTime = request.CreateTime + 10,
                 FromUserName = "工作小助手",
                 ToUserName = req.FromUserName,
-                MsgType = "text"
+                MsgType = "text",
+                FuncFlag = 1
             };
             XmlSerializer xs = new XmlSerializer();
             xs.DateFormat = "";

@@ -15,5 +15,6 @@ namespace DomainCore
         public long CreateTime { get; set; }
         public String MsgType { get; set; }
         public String Content { get; set; }
+        public int FuncFlag { get; set; }
     }
 }
