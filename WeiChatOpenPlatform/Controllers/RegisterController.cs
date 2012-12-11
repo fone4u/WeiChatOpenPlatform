@@ -48,6 +48,8 @@ namespace WeiChatOpenPlatform.Controllers
             {
                 xmlContent = sr.ReadToEnd();
             }
+            MsgRepositry.Messages.Add(xmlContent);
+
             XmlDeserializer xds = new XmlDeserializer();
             WeiChatRequest request = xds.Deserialize<WeiChatRequest>(new RestResponse() { Content = xmlContent });
             TextRequest req = new TextRequest(request);

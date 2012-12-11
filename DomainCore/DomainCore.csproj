@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MsgRepositry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SHA1Algorithm.cs" />
     <Compile Include="TextRequest.cs" />
