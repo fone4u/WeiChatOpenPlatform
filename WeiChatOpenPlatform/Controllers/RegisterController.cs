@@ -11,6 +11,7 @@ using RestSharp.Serializers;
 using RestSharp;
 using System.IO;
 using System.Xml;
+using WeiChatOpenPlatform.Framework;
 
 
 namespace WeiChatOpenPlatform.Controllers
@@ -50,62 +51,26 @@ namespace WeiChatOpenPlatform.Controllers
             }
             MsgRepositry.Messages.Add(xmlContent);
 
-            XmlDeserializer xds = new XmlDeserializer();
-            WeiChatRequest request = xds.Deserialize<WeiChatRequest>(new RestResponse() { Content = xmlContent });
-            TextRequest req = new TextRequest(request);
+            //XmlDeserializer xds = new XmlDeserializer();
+            //WeiChatRequest request = xds.Deserialize<WeiChatRequest>(new RestResponse() { Content = xmlContent });
+            //TextRequest req = new TextRequest(request);
 
-            TextResponse rsp = new TextResponse()
+            Message requestMsg = WeiChatMsgConvertor.ConverToMessage(xmlContent);
+
+            
+
+            Message replyMsg = new TextMessage()
             {
-                Content = "测试",
-                CreateTime = request.CreateTime + 10,
-                FromUserName = "gh_c9f7ad037912",
-                ToUserName = req.FromUserName,
-                MsgType = "text",
+                Content = Reboter.TryToUnderStand(requestMsg.FromUserName,(requestMsg as TextMessage).Content),
+                CreateTime = DateTime.Now,
+                FromUserName = requestMsg.ToUserName,
+                ToUserName = requestMsg.FromUserName,
+                MsgType = MsgType.Text,
                 FuncFlag = 1
             };
 
-            String xmlResponseContent = string.Empty;
-            using (MemoryStream stream = new MemoryStream())
-            {
-                XmlTextWriter xw = new XmlTextWriter(stream, UTF8Encoding.UTF8);
-                xw.WriteStartElement("xml");
+            String xmlResponseContent = WeiChatMsgConvertor.ConvertToWeiChatResponse(replyMsg);
 
-                xw.WriteStartElement("ToUserName");
-                xw.WriteCData(rsp.ToUserName);
-                xw.WriteEndElement();
-
-                xw.WriteStartElement("FromUserName");
-                xw.WriteCData(rsp.FromUserName);
-                xw.WriteEndElement();
-
-                xw.WriteStartElement("CreateTime");
-                xw.WriteValue(rsp.CreateTime);
-                xw.WriteEndElement();
-
-                xw.WriteStartElement("MsgType");
-                xw.WriteCData(rsp.MsgType);
-                xw.WriteEndElement();
-
-                xw.WriteStartElement("Content");
-                xw.WriteCData(rsp.Content);
-                xw.WriteEndElement();
-
-                xw.WriteStartElement("FuncFlag");
-                xw.WriteValue(0);
-                xw.WriteEndElement();
-
-
-                xw.WriteEndElement();
-
-                xw.Flush();
-
-                stream.Position = 0;
-
-                using (StreamReader sr = new StreamReader(stream))
-                {
-                    xmlResponseContent = sr.ReadToEnd();
-                }
-            }
             MsgRepositry.Messages.Add(xmlResponseContent);
             return new ContentResult() { Content = xmlResponseContent };
 

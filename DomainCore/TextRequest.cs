@@ -24,10 +24,5 @@ namespace DomainCore
         }
     }
 
-    public enum MsgType
-    {
-        Text,
-        Pic,
-        Locaton
-    }
+    
 }

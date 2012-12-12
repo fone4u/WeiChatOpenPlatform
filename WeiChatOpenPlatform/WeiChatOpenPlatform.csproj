@@ -129,6 +129,7 @@
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\ViewMessagesController.cs" />
+    <Compile Include="Framework\WeiChatMsgConvertor.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
