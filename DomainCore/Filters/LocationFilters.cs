@@ -31,7 +31,7 @@ namespace DomainCore.Filters
                         StringBuilder sb = new StringBuilder();
                         for (int i = 0; i < results.Count; i++)
                         {
-                            sb.AppendFormat("{0}:{1}", i + 1, results[0].JobTitle);
+                            sb.AppendFormat("{0}:{1} http://www.careerbuilder.com.cn/jobs/{2}", i + 1, results[i].JobTitle,results[i].DID);
                         }
                         result = sb.ToString();
                         return true;
