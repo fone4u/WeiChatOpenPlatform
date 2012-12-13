@@ -9,11 +9,11 @@ namespace DomainCore.Filters
     class ConstContentFilter : IFilter
     {
 
-
+        
 
         public ConstContentFilter()
         {
-
+            
         }
 
         public bool Filters(string userId, string content,out  string result)

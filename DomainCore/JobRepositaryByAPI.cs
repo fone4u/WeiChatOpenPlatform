@@ -11,7 +11,7 @@ namespace DomainCore
     public class JobRepositaryByAPI : IJobRepositary
     {
 
-        public JobSearchAPICaller JobSearchAPICaller { get; set; }
+        public JobSearchAPICaller JobSearchAPICaller { get { return new JobSearchAPICaller(); } }
 
         public IList<JobSearchResult> Search(JobSearchQuery query)
         {

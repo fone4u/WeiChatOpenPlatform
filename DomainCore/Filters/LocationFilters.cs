@@ -20,7 +20,20 @@ namespace DomainCore.Filters
                     {
                         transaction.Location = content;
                         transaction.Status = Status.Done;
-                        result = "这里是职位结果";
+                        //result = "这里是职位结果";
+                        IList<JobSearchResult> results = (new JobRepositaryByAPI()).Search(new JobSearchQuery()
+                            {
+                                KeyWord = transaction.KeyWord,
+                                Location = transaction.Location,
+                                PageSize = 3,
+                                StartIndex = 1
+                            });
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < results.Count; i++)
+                        {
+                            sb.AppendFormat("{0}:{1}", i + 1, results[0].JobTitle);
+                        }
+                        result = sb.ToString();
                         return true;
                     }
                 }
